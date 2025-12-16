@@ -62,12 +62,12 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home.html')  # blank news/home screen
+    return render_template('home.html') 
 
 @app.route('/friends')
 @login_required
 def friends():
-    return render_template('friends.html')  # your Top 8 friendbox grid
+    return render_template('friends.html')  
 
 @app.route('/logout')
 @login_required
