@@ -1,7 +1,7 @@
 /* Fixed background for the whole site */
 body {
   margin: 0;
-  background: #000033 url('https://i.imgur.com/removed.jpg') repeat fixed; /* Change this URL to your background image later */
+  background: #000033 url('') repeat fixed; /* Change this URL to your background image later */
   background-size: auto;
   min-height: 100vh;
 }
