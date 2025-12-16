@@ -1,0 +1,43 @@
+/* Fixed background for the whole site */
+body {
+  margin: 0;
+  background: #000033 url('https://i.imgur.com/removed.jpg') repeat fixed; /* Change this URL to your background image later */
+  background-size: auto;
+  min-height: 100vh;
+}
+
+/* Center container for all content */
+.container {
+  max-width: 1000px; /* Change this number to make the center wider/narrower */
+  margin: 0 auto; /* Centers it */
+  background: white; /* White center area — change color if you want */
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8); /* Optional shadow for depth */
+  position: relative;
+}
+
+/* Fixed navbar inside the container */
+nav {
+  background: #333;
+  padding: 15px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav a {
+  color: white;
+  margin: 0 30px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Content padding so it doesn't touch navbar */
+.content {
+  padding: 20px;
+}

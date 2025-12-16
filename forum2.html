@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>forum</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+
+  /* note to self, 
+  some of these things need to be deleted 
+  when combining into the full website, 
+  such as the nav bar and some titles, 
+  delete the rank thing as well. */
+    @import url('https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&family=Georgia&display=swap');
+
+    body {margin:0;padding:0;background:#d6e4ff url('https://i.imgur.com/5t8X9Yk.png') fixed;font-family:Tahoma,sans-serif;font-size:13px;color:#000;display:flex;justify-content:center;transition:background 0.3s,color 0.3s;}
+    .wrapper {width:100%;max-width:940px;background:#fff;border-left:1px solid #99aacc;border-right:1px solid #99aacc;box-shadow:0 0 20px rgba(0,0,0,.2);min-height:100vh;transition:background 0.3s,border 0.3s;}
+    header {background:linear-gradient(#5577ff,#3344cc);color:white;padding:20px;text-align:center;border-bottom:4px solid #223399;transition:background 0.3s;}
+    header h1 {margin:0;font-size:28px;font-family:Georgia,serif;text-shadow:2px 2px 4px #000;}
+    .nav {background:#f8f8f8;border-bottom:1px solid #ccc;padding:8px;text-align:center;transition:background 0.3s;}
+    .nav a {margin:0 15px;color:#00e;text-decoration:underline;cursor:pointer;}
+    .content {padding:20px;}
+
+    table {width:100%;border-collapse:collapse;transition:background 0.3s;}
+    th {background:#eef;padding:10px;text-align:left;border-bottom:2px solid #99aacc;transition:background 0.3s;}
+    td {padding:12px 10px;border-bottom:1px solid #ddd;transition:border 0.3s;}
+    tr:hover {background:#f8f8ff;transition:background 0.3s;}
+    tr.sticky {background:#ffffe0;font-weight:bold;}
+
+    .thread-title {font-weight:bold;color:#00e;cursor:pointer;}
+    .thread-title:hover {text-decoration:underline;}
+    .icon {width:24px;height:24px;vertical-align:middle;margin-right:8px;}
+    .new-thread {background:#f0f4ff;border:1px dashed #99aacc;padding:20px;margin:25px 0;border-radius:8px;transition:background 0.3s,border 0.3s;}
+    input, textarea, select {width:100%;padding:8px;margin:6px 0;box-sizing:border-box;transition:background 0.3s,color 0.3s,border 0.3s;}
+    button {background:#5577ff;color:white;border:1px solid #3344cc;padding:8px 16px;cursor:pointer;border-radius:4px;transition:background 0.3s;}
+    button:hover {background:#3344cc;}
+    .post {background:#fafafa;border:1px solid #ddd;padding:15px;margin:15px 0;border-radius:6px;overflow:hidden;transition:background 0.3s,border 0.3s;}
+    .quote {background:#f0f0ff;border-left:4px solid #99aacc;padding:10px;margin:10px 0;font-style:italic;transition:background 0.3s;}
+    .code {background:#eee;padding:10px;font-family:monospace;overflow:auto;border:1px solid #ccc;transition:background 0.3s;}
+    .smiley {cursor:pointer;height:20px;vertical-align:middle;margin:0 3px;}
+    .search-bar {margin-bottom:20px;text-align:center;}
+    .footer {text-align:center;padding:20px;background:#eef;border-top:1px solid #ccc;font-size:12px;color:#555;transition:background 0.3s;}
+    .hidden {display:none;}
+    .reply-pag {text-align:center;margin:20px 0;}
+    .reply-pag button {margin:0 5px;}
+
+    .like-btn {background:none;color:#888;border:none;cursor:pointer;font-size:12px;}
+    .like-btn:hover {color:#00e;}
+    .mod-btn {color:#f00;font-size:11px;margin-left:10px;cursor:pointer;}
+
+    .category {background:#f0f4ff;border:1px solid #99aacc;padding:25px;margin:20px 0;border-radius:12px;cursor:pointer;transition:background 0.3s;}
+    .category:hover {background:#e0eaff;}
+    .category h3 {margin:0 0 10px;color:#3344cc;font-size:18px;}
+    .category p {margin:0;color:#555;}
+
+    .mini-profile {position:absolute;background:#fff;border:2px solid #3344cc;padding:15px;box-shadow:0 0 15px rgba(0,0,0,0.3);z-index:100;border-radius:8px;width:250px;display:none;}
+    .mini-profile img {width:100%;border-radius:8px;margin-bottom:10px;}
+    .mention {color:#00e;cursor:pointer;text-decoration:underline;}
+    .mention:hover {color:#3344cc;}
+
+    #backToTop {position:fixed;bottom:30px;right:30px;background:#5577ff;color:white;padding:12px 18px;border-radius:6px;cursor:pointer;display:none;box-shadow:0 0 10px rgba(0,0,0,0.3);transition:background 0.3s;}
+    #backToTop:hover {background:#3344cc;}
+
+    /* Dark Mode, needs to be fixed */
+    body.dark {background:#111;color:#eee;}
+    .wrapper.dark {background:#222;border-color:#555;}
+    header.dark {background:linear-gradient(#3344cc,#112277);}
+    .nav.dark {background:#333;color:#ddd;}
+    table.dark th {background:#444;}
+    tr.dark:hover {background:#333;}
+    .post.dark {background:#333;border-color:#555;}
+    .new-thread.dark {background:#333;border-color:#555;}
+    input.dark, textarea.dark {background:#444;color:#eee;border-color:#666;}
+    .category.dark {background:#333;border-color:#555;}
+    .category.dark:hover {background:#444;}
+    .footer.dark {background:#333;color:#aaa;}
+    .mini-profile.dark {background:#333;color:#eee;border-color:#666;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <h1>name placeholder</h1>
+        <p>Welcome, [logged in username will go here]!</p>
+    </header>
+
+    <div class="nav">
+        <a onclick="showProfile()">My Profile</a> |
+        <a onclick="showHome()">Home</a> |
+        <a onclick="showList()">All Threads</a> |
+        <a href="#">Members</a> |
+        <a href="#">Help</a> |
+        <a onclick="toggleDarkMode()">Dark Mode</a>
+    </div>
+
+    <div class="content">
+
+        <!-- Home Categories -->
+        <div id="homeView">
+            <div class="category" onclick="showList('recent')">
+                <h3>Recent Posts</h3>
+                <p>Latest discussions from across the forum.</p>
+            </div>
+            <div class="category" onclick="showList('popular')">
+                <h3>Popular (by Replies)</h3>
+                <p>Threads with the most activity.</p>
+            </div>
+            <div class="category" onclick="showList('liked')">
+                <h3>Most Liked</h3>
+                <p>Threads with the highest likes.</p>
+            </div>
+            <div class="category" onclick="showList('questions')">
+                <h3>Questions/Help</h3>
+                <p>Get or give advice.</p>
+            </div>
+            <div class="category" onclick="showList('trade')">
+                <h3>Trade</h3>
+                <p>Buy, sell, or trade ...  items.</p>
+            </div>
+            <div class="category" onclick="showList('chatrooms')">
+                <h3>Chatrooms</h3>
+                <p>Off-topic and casual chats.</p>
+            </div>
+        </div>
+
+        <!-- Profile Modal -->
+        <div id="profileModal" class="hidden" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border:4px double #3344cc;padding:30px;z-index:100;width:450px;box-shadow:0 0 30px #000;border-radius:12px;">
+            <h2>My Profile</h2>
+            <p><strong>Name:</strong> <span id="profileName">Guest</span></p>
+            <p><strong>Rank:</strong> <span id="profileRank">New Trainer</span></p>
+            <p><strong>Avatar:</strong><br><img id="profileAvatar" src="" style="width:120px;height:120px;border-radius:12px;"></p>
+            <p><strong>Mood:</strong> <span id="profileMood">-</span></p>
+            <p><strong>Gender:</strong> <span id="profileGender">-</span> <span id="genderIcon"></span></p>
+            <p><strong>Posts:</strong> <span id="profilePosts">0</span></p>
+            <p><strong>Joined:</strong> <span id="profileDate">-</span></p>
+            <hr>
+            <input type="text" id="avatarUrl" placeholder="Avatar image URL">
+            <input type="text" id="moodText" placeholder="Current mood">
+            <select id="genderSelect">
+                <option value="">None</option>
+                <option value="male">♂ Male</option>
+                <option value="female">♀ Female</option>
+                <option value="other">⚧ Other</option>
+            </select>
+            <button onclick="saveProfile()">Save Changes</button>
+            <button onclick="document.getElementById('profileModal').classList.add('hidden')">Close</button>
+        </div>
+
+        <!-- Thread List -->
+        <div id="listView" class="hidden">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search threads..." onkeyup="renderList()">
+                <button onclick="renderList()">Search</button>
+                <button onclick="document.getElementById('searchInput').value='';renderList()">Show All</button>
+            </div>
+
+            <div class="new-thread">
+                <strong>Start a New Topic</strong><br><br>
+                Title: <input type="text" id="newTitle" placeholder="Thread title"><br>
+                Message:<br><textarea id="newContent" rows="8" placeholder="Use BBCode: [b]bold[/b], [i]italic[/i], [url=link]text[/url], [img]url[/img], [quote=Name]text[/quote], [color=red]text[/color]"></textarea><br>
+                Icon: <select id="newIcon">
+                    <option value="https://i.imgur.com/8Xz1X8E.png">General</option>
+                    <option value="https://i.imgur.com/0Xz1X8E.png">Question</option>
+                    <option value="https://i.imgur.com/1Xz1X8E.png">Trade</option>
+                    <option value="https://i.imgur.com/2Xz1X8E.png">Shiny Hunt</option>
+                    <option value="https://i.imgur.com/3Xz1X8E.png">Event</option>
+                </select><br>
+                Sticky? <input type="checkbox" id="newSticky">
+                Name: <input type="text" id="newAuthor" placeholder="Your name (saved)">
+                <button onclick="createThread()">Post Thread</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:50px"></th>
+                        <th>Thread</th>
+                        <th style="width:150px">Replies / Views</th>
+                        <th style="width:180px">Last Post</th>
+                    </tr>
+                </thead>
+                <tbody id="threads"></tbody>
+            </table>
+        </div>
+
+        <!-- Thread View -->
+        <div id="threadView" class="hidden">
+            <p><button onclick="showList()">← Back to Forum Index</button> <button onclick="toggleLockThread()" style="background:#f00;">Lock/Unlock (Admin)</button></p>
+            <div id="threadContent"></div>
+
+            <div class="new-thread" id="replyBox">
+                <strong>Quick Reply</strong><br>
+                <div style="margin:10px 0;">
+                    Smilies: 
+                    <img class="smiley" src="https://i.imgur.com/8Xz1X8E.png" onclick="addBB(' :) ')">
+                    <img class="smiley" src="https://i.imgur.com/9Xz1X8E.png" onclick="addBB(' :D ')">
+                    <img class="smiley" src="https://i.imgur.com/0Xz1X8E.png" onclick="addBB(' ;) ')">
+                    <img class="smiley" src="https://i.imgur.com/1Xz1X8E.png" onclick="addBB(' :P ')">
+                    <img class="smiley" src="https://i.imgur.com/2Xz1X8E.png" onclick="addBB(' :( ')">
+                </div>
+                <textarea id="replyContent" rows="8"></textarea><br>
+                Name: <input type="text" id="replyAuthor" placeholder="Your name">
+                <button onclick="postReply()">Post Reply</button>
+            </div>
+
+            <div id="replies"></div>
+
+            <div class="reply-pag" id="replyPag"></div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+         Visitors today: <span id="visitorCount">1</span>
+    </div>
+</div>
+
+<div id="miniProfile" class="mini-profile hidden">
+  <div style="display:flex;align-items:center;padding:10px;background:#fff;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">
+      <img id="miniAvatar" src="" style="width:50px;height:50px;border-radius:10px;margin-right:12px;">
+      <div>
+          <strong id="miniName" style="font-size:14px;"></strong>
+          <span id="miniGender" style="margin-left:6px;font-size:12px;"></span><br>
+          <span id="miniMood" style="font-size:12px;color:#666;"></span>
+      </div>
+  </div>
+</div>
+
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Top</button>
+<script>
+  let threads = JSON.parse(localStorage.getItem('phForumThreads')) || [];
+  let currentThread = null;
+  let currentReplyPage = 0;
+  const repliesPerPage = 20;
+
+  function save() {
+      localStorage.setItem('phForumThreads', JSON.stringify(threads));
+  }
+
+  function getUser() {
+      return localStorage.getItem('forumUsername') || "Guest";
+  }
+
+  function getRank(posts) {
+      if (posts < 10) return {text: 'New Trainer', class: 'rank-new'};
+      if (posts < 50) return {text: 'Trainer', class: 'rank-trainer'};
+      if (posts < 200) return {text: 'Elite', class: 'rank-elite'};
+      return {text: 'Master', class: 'rank-master'};
+  }
+
+  function showProfile() {
+      const name = getUser();
+      const posts = threads.reduce((c, t) => c + 1 + (t.replies?.length || 0), 0);
+      const rank = getRank(posts);
+      document.getElementById('profileName').textContent = name;
+      document.getElementById('profileRank').innerHTML = `<span class="${rank.class}">${rank.text}</span>`;
+      document.getElementById('profilePosts').textContent = posts;
+      document.getElementById('profileDate').textContent = new Date(localStorage.getItem('joinDate') || Date.now()).toLocaleDateString();
+      document.getElementById('profileAvatar').src = localStorage.getItem('avatarUrl') || 'https://pokeheroes.com/img/pkmn/25.png';
+      document.getElementById('profileMood').textContent = localStorage.getItem('mood') || '-';
+      const gender = localStorage.getItem('gender') || '';
+      document.getElementById('profileGender').textContent = gender;
+      document.getElementById('genderIcon').textContent = gender === 'male' ? '♂' : gender === 'female' ? '♀' : gender === 'other' ? '⚧' : '';
+      document.getElementById('avatarUrl').value = localStorage.getItem('avatarUrl') || '';
+      document.getElementById('moodText').value = localStorage.getItem('mood') || '';
+      document.getElementById('genderSelect').value = gender;
+      document.getElementById('profileModal').classList.remove('hidden');
+  }
+
+  function saveProfile() {
+      localStorage.setItem('avatarUrl', document.getElementById('avatarUrl').value.trim());
+      localStorage.setItem('mood', document.getElementById('moodText').value.trim());
+      localStorage.setItem('gender', document.getElementById('genderSelect').value);
+      showProfile();
+  }
+
+  function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+  }
+
+  if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
+
+  function parseBB(text) {
+      return text
+          .replace(/\[b\](.*?)\[\/b\]/gi, '<strong>$1</strong>')
+          .replace(/\[i\](.*?)\[\/i\]/gi, '<em>$1</em>')
+          .replace(/\[u\](.*?)\[\/u\]/gi, '<u>$1</u>')
+          .replace(/\[s\](.*?)\[\/s\]/gi, '<s>$1</s>')
+          .replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, '<a href="$1" target="_blank">$2</a>')
+          .replace(/\[img\](.*?)\[\/img\]/gi, '<img src="$1" style="max-width:100%;height:auto;">')
+          .replace(/\[quote="?(.+?)"?\](.*?)\[\/quote\]/gi, '<div class="quote"><strong>$1 wrote:</strong><br>$2</div>')
+          .replace(/\[code\](.*?)\[\/code\]/gi, '<div class="code">$1</div>')
+          .replace(/\[color=(red|blue|green|yellow|purple|orange|pink)\](.*?)\[\/color\]/gi, '<span style="color:$1">$2</span>')
+          .replace(/@(\w+)/gi, '<span class="mention" onmouseover="showMiniProfile(event, \'$1\')">@$1</span>')
+          .replace(/\n/g, '<br>');
+  }
+
+  function showMiniProfile(e, user) {
+    const mini = document.getElementById('miniProfile');
+    const avatar = localStorage.getItem('avatarUrl') || 'https://pokeheroes.com/img/pkmn/25.png';
+    const gender = localStorage.getItem('gender') || '';
+    const genderSymbol = gender === 'male' ? '♂' : gender === 'female' ? '♀' : gender === 'other' ? '⚧' : '';
+    const mood = localStorage.getItem('mood') || 'No mood set';
+
+    document.getElementById('miniAvatar').src = avatar;
+    document.getElementById('miniName').textContent = user;
+    document.getElementById('miniGender').textContent = genderSymbol;
+    document.getElementById('miniMood').textContent = mood;
+
+    mini.style.display = 'block';
+    mini.style.left = (e.pageX + 10) + 'px';
+    mini.style.top = (e.pageY + 10) + 'px';
+
+    // Hide immediately on mouseout
+    mini.onmouseout = () => mini.style.display = 'none';
+}
+
+function renderList(category = '') {
+    const tbody = document.getElementById('threads');
+    tbody.innerHTML = '';
+    let displayThreads = threads.slice();
+    const query = document.getElementById('searchInput')?.value.toLowerCase().trim() || '';
+    if (query) {
+        displayThreads = displayThreads.filter(t => 
+            t.title.toLowerCase().includes(query) || 
+            t.content.toLowerCase().includes(query)
+        );
+    }
+
+    // Category filtering
+    if (category === 'recent') {
+        displayThreads.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (category === 'popular') {
+        displayThreads.sort((a, b) => (b.replies?.length || 0) - (a.replies?.length || 0));
+    } else if (category === 'liked') {
+        displayThreads.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+    } else if (category === 'questions') {
+        displayThreads = displayThreads.filter(t => t.icon.includes('question'));
+    } else if (category === 'trade') {
+        displayThreads = displayThreads.filter(t => t.icon.includes('trade'));
+    } else if (category === 'chatrooms') {
+        displayThreads = displayThreads.filter(t => t.title.toLowerCase().includes('chat'));
+    }
+
+    displayThreads.sort((a, b) => (b.sticky ? 1 : 0) - (a.sticky ? 1 : 0));
+
+    if (displayThreads.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#777;">No threads in this section.</td></tr>';
+        return;
+    }
+
+    displayThreads.forEach(t => {
+        const originalIndex = threads.indexOf(t);
+        const last = t.replies?.[t.replies.length - 1] || t;
+        const tr = document.createElement('tr');
+        tr.className = t.sticky ? 'sticky' : '';
+        tr.innerHTML = `
+            <td><img src="${localStorage.getItem('avatarUrl') || 'https://pokeheroes.com/img/pkmn/25.png'}" style="width:40px;height:40px;border-radius:8px;"></td>
+            <td>
+                <span class="thread-title" onclick="openThread(${originalIndex})">${escape(t.title)}</span>${t.sticky ? ' [Sticky]' : ''}<br>
+                <small>by <span class="mention" onmouseover="showMiniProfile(event, '${escape(t.author)}')">${escape(t.author)}</span></small>
+            </td>
+            <td style="text-align:center">${t.replies?.length || 0} / ${t.views || 0}</td>
+            <td class="meta">${new Date(last.date).toLocaleString()}<br>by <span class="mention" onmouseover="showMiniProfile(event, '${escape(last.author || t.author)}')">${escape(last.author || t.author)}</span></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+  function createThread() {
+      const title = document.getElementById('newTitle').value.trim() || "Untitled";
+      const content = document.getElementById('newContent').value.trim();
+      const author = getUser();
+      const icon = document.getElementById('newIcon').value;
+      const sticky = document.getElementById('newSticky').checked;
+
+      threads.unshift({title, content, author, icon, sticky, date: new Date().toISOString(), replies: [], locked: false, views: 0, likes: 0});
+      save();
+      document.getElementById('newTitle').value = '';
+      document.getElementById('newContent').value = '';
+      renderList();
+  }
+
+  function openThread(i) {
+    if (i < 0 || i >= threads.length) return;
+    currentThread = i;
+    currentReplyPage = 0;
+    threads[i].views = (threads[i].views || 0) + 1;
+    save();
+    const t = threads[i];
+    document.getElementById('homeView').classList.add('hidden');
+    document.getElementById('listView').classList.add('hidden');
+    document.getElementById('threadView').classList.remove('hidden');
+    document.getElementById('replyBox').style.display = t.locked ? 'none' : 'block';
+
+    document.getElementById('threadContent').innerHTML = `
+        <h2><img src="${t.icon}" class="icon"> ${escape(t.title)} (Views: ${t.views})</h2>
+        <div class="post" style="display:flex;align-items:start;">
+            <img src="${localStorage.getItem('avatarUrl') || 'https://pokeheroes.com/img/pkmn/25.png'}" 
+                 style="width:60px;height:60px;border-radius:10px;margin-right:15px;cursor:pointer;" 
+                 onmouseover="showMiniProfile(event, '${escape(t.author)}')">
+            <div style="flex:1;">
+                <strong><span class="mention" onmouseover="showMiniProfile(event, '${escape(t.author)}')">${escape(t.author)}</span></strong> <small>${new Date(t.date).toLocaleString()}</small>
+                <p style="margin:15px 0">${parseBB(t.content)}</p>
+            </div>
+        </div>
+    `;
+    renderReplies();
+    renderReplyPag();
+}
+
+function renderReplyPag() {
+    const pag = document.getElementById('replyPag');
+    pag.innerHTML = '';
+    const replies = threads[currentThread].replies || [];
+    const totalPages = Math.ceil(replies.length / repliesPerPage);
+    if (totalPages <= 1) return;
+    for (let p = 0; p < totalPages; p++) {
+        const btn = document.createElement('button');
+        btn.textContent = p + 1;
+        btn.onclick = () => { currentReplyPage = p; renderReplies(); };
+        if (p === currentReplyPage) btn.style.background = '#3344cc';
+        pag.appendChild(btn);
+    }
+}
+
+function postReply() {
+    if (threads[currentThread].locked) {
+        alert("This thread is locked — no new replies allowed!");
+        return;
+    }
+    const content = document.getElementById('replyContent').value.trim();
+    const author = getUser();
+    if (!content) {
+        alert("Please write a reply!");
+        return;
+    }
+    threads[currentThread].replies.push({
+        content: content,
+        author: author,
+        date: new Date().toISOString(),
+        likes: 0
+    });
+    save();
+    document.getElementById('replyContent').value = '';
+    currentReplyPage = Math.floor((threads[currentThread].replies.length - 1) / repliesPerPage);
+    renderReplies();
+    renderReplyPag();
+    renderList();
+}
+
+function renderReplies() {
+    const div = document.getElementById('replies');
+    div.innerHTML = '';
+    const replies = threads[currentThread].replies || [];
+    const start = currentReplyPage * repliesPerPage;
+    const end = start + repliesPerPage;
+    const pageReplies = replies.slice(start, end);
+
+    pageReplies.forEach((r, j) => {
+        const globalJ = start + j;
+        const p = document.createElement('div');
+        p.className = 'post';
+        p.innerHTML = `
+            <div class="post" style="display:flex;align-items:start;">
+                <img src="${localStorage.getItem('avatarUrl') || 'https://pokeheroes.com/img/pkmn/25.png'}" 
+                     style="width:50px;height:50px;border-radius:10px;margin-right:12px;cursor:pointer;" 
+                     onmouseover="showMiniProfile(event, '${escape(r.author || 'Guest')}')">
+                <div style="flex:1;">
+                    <strong><span class="mention" onmouseover="showMiniProfile(event, '${escape(r.author || 'Guest')}')">${escape(r.author || 'Guest')}</span></strong> <small>${new Date(r.date).toLocaleString()}</small>
+                    <span class="like-btn" onclick="likePost(${globalJ})">👍 <span id="likes-${globalJ}">${r.likes || 0}</span></span>
+                    <span class="mod-btn" onclick="reportPost()">Report</span>
+                    <button onclick="quote('${escape(r.content.replace(/'/g, '\\\'')).replace(/"/g, '&quot;')}', '${escape(r.author||'Guest')}')" style="float:right;font-size:11px;">Quote</button>
+                    <p style="margin:15px 0">${parseBB(r.content)}</p>
+                </div>
+            </div>
+        `;
+        div.appendChild(p);
+    });
+}
+
+  function likePost(j) {
+      threads[currentThread].replies[j].likes = (threads[currentThread].replies[j].likes || 0) + 1;
+      save();
+      renderReplies();
+  }
+
+  function reportPost() {
+      alert("Post reported to moderators!");
+  }
+
+  function toggleLockThread() {
+      if (prompt('Admin password:') !== 'admin123') return alert("Wrong!");
+      threads[currentThread].locked = !threads[currentThread].locked;
+      save();
+      openThread(currentThread);
+  }
+
+  function quote(text, author) {
+      document.getElementById('replyContent').value += `\n\n[quote="${author}"]${text}[/quote]\n`;
+  }
+
+  function addBB(code) {
+      document.getElementById('replyContent').value += code;
+  }
+
+  function showHome() {
+      document.getElementById('listView').classList.add('hidden');
+      document.getElementById('threadView').classList.add('hidden');
+      document.getElementById('homeView').classList.remove('hidden');
+  }
+
+  function showList(category = '') {
+    document.getElementById('homeView').classList.add('hidden');
+    document.getElementById('threadView').classList.add('hidden');
+    document.getElementById('listView').classList.remove('hidden');
+    currentCategory = category; // Optional: store for future use
+    renderList(category);
+}
+
+  function escape(s) {
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // Setup
+  if (!localStorage.getItem('forumUsername')) {
+      const name = prompt("Welcome! Choose a username:", "Trainer");
+      localStorage.setItem('forumUsername', name || "Guest");
+      localStorage.setItem('joinDate', new Date());
+  }
+
+  let count = parseInt(localStorage.getItem('visitors') || '0') + 1;
+  localStorage.setItem('visitors', count);
+  document.getElementById('visitorCount').textContent = count;
+
+  window.onscroll = () => {
+      document.getElementById('backToTop').style.display = document.documentElement.scrollTop > 300 ? 'block' : 'none';
+  };
+
+  showHome();
+</script>
+</body>
+</html>

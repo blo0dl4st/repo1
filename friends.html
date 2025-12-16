@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Friends List</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    body { margin: 0; font-family: Arial; }
+    nav { background: #333; padding: 15px; text-align: center; position: fixed; top: 0; width: 100%; z-index: 100; }
+    nav a { color: white; margin: 0 30px; font-size: 20px; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .content { margin-top: 80px; padding: 20px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/home">Home</a>
+    <a href="/logout">Logout</a>
+  </nav>
+
+  <div class="content">
+    <div id="mainprofilepicture">hi</div>
+    <div id="profilestats">hi</div>
+
+    <div class="mainfriendbox">
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend1</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend2</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend3</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend4</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend5</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend6</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend7</div>
+      </div>
+      <div class="innerbox">
+        <img src="{{ url_for('static', filename='images/profilepic.png') }}">
+        <div class="name-box">friend8</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
